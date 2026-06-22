@@ -3,27 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IMC para WhatsApp</title>
+<title>IMC com WhatsApp</title>
 
 <style>
+
 body{
     font-family: Arial, sans-serif;
     text-align: center;
-    padding: 30px;
     background-color: #f5f5f5;
+    padding: 30px;
+}
+
+.container{
+    background: white;
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
 }
 
 input{
+    width: 90%;
     padding: 10px;
-    margin: 5px;
-    width: 200px;
+    margin: 8px;
 }
 
 button{
-    padding: 10px 20px;
     background-color: #25D366;
     color: white;
     border: none;
+    padding: 12px 20px;
     cursor: pointer;
     border-radius: 5px;
 }
@@ -36,34 +46,50 @@ button:hover{
     margin-top: 15px;
     font-size: 18px;
 }
-</style>
 
+</style>
 </head>
+
 <body>
+
+<div class="container">
 
 <h2>Calculadora de IMC</h2>
 
-<input type="number" id="peso" placeholder="Peso (kg)" step="0.1"><br>
+<input type="text" id="nome" placeholder="Digite seu nome">
 
-<input type="number" id="altura" placeholder="Altura (m)" step="0.01"><br><br>
+<input type="number" id="peso" placeholder="Peso (kg)" step="0.1">
 
-<button onclick="calcularEEnviar()">Calcular e Enviar</button>
+<input type="number" id="altura" placeholder="Altura (m)" step="0.01">
+
+<input type="text" id="numero" placeholder="Número WhatsApp (Ex: 5522999999999)">
+
+<br><br>
+
+<button onclick="calcularEEnviar()">
+Calcular e Enviar
+</button>
 
 <p id="resultado"></p>
+
+</div>
 
 <script>
 
 function calcularEEnviar(){
 
+    let nome = document.getElementById("nome").value;
     let peso = parseFloat(document.getElementById("peso").value);
     let altura = parseFloat(document.getElementById("altura").value);
+    let numero = document.getElementById("numero").value;
 
-    if(!peso || !altura){
-        alert("Preencha peso e altura.");
+    if(nome === "" || !peso || !altura || numero === ""){
+        alert("Preencha todos os campos.");
         return;
     }
 
     let imc = peso / (altura * altura);
+
     let classificacao = "";
 
     if(imc < 18.5){
@@ -80,19 +106,21 @@ function calcularEEnviar(){
     }
 
     document.getElementById("resultado").innerHTML =
-        "Seu IMC é <strong>" + imc.toFixed(2) +
-        "</strong> - " + classificacao;
+        "<strong>" + nome + "</strong><br>" +
+        "IMC: " + imc.toFixed(2) + "<br>" +
+        "Classificação: " + classificacao;
 
     let mensagem =
-        "Meu IMC é " + imc.toFixed(2) +
-        ". Classificação: " + classificacao + ".";
-
-    // Troque pelo seu número
-    let numero = "5522992489562";
+        "Olá " + nome + "! Seu IMC é " +
+        imc.toFixed(2) +
+        ". Classificação: " +
+        classificacao + ".";
 
     let url =
-        "https://wa.me/" + numero +
-        "?text=" + encodeURIComponent(mensagem);
+        "https://wa.me/" +
+        numero +
+        "?text=" +
+        encodeURIComponent(mensagem);
 
     window.open(url, "_blank");
 }
